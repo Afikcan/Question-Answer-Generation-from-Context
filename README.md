@@ -1,44 +1,45 @@
-# Question-Answer-Generation-from-Context
-The main objective of the project is to develop a system that can automatically generate questions from a given context using the T5 model. In addition to the main objective, it is also aimed to generate one correct answer to this question and three strongly misleading answers that make it difficult to know this answer. This system focuses on the capacity to generate contextually relevant and meaningful questions, with particular applicability in the field of education.
-## Training Phase
+# Automatic Question-Answer Generation from Context
+## Objective and Motivation
 
-This project involves a training phase where we prepare our model for the main tasks. Here are the steps followed during this phase:
-### 1. Download Squad Dataset, Preprocess and Save as CSV Files
+Our project aims to revolutionize teaching methodologies and content creation. The primary goals include generating relevant questions based on texts and creating stimulating distractors. This project addresses complex challenges related to distractor development and T5 model training.
 
-Objective: Download the Squad and Race Dataset and merge them, preprocess it for our specific needs, and save the processed data in CSV format.
-Details: This step is crucial for ensuring that our model has the right format of data for training.
+## Model Used - T5
+As previously mentioned, we utilized the T5 model.
 
-### 2. Train T5 Transformer Model
+### T5 Model Overview
 
-Objective: Train the T5 transformer model using the preprocessed merged Dataset.
-Details: The training process involves fine-tuning the T5 model to adapt it to our specific requirements and improve its prediction accuracy.
+T5, a transformative NLP model, operates on an encoder-decoder architecture crucial for text processing and generation.
 
-### 3. Test the Trained T5 Model
+  Encoder: Analyzes the input text, converting text into tokens to create a rich, contextualized representation of each segment. Using Transformer blocks, it performs operations like self-attention to deeply understand text nuances.
 
-Objective: Evaluate the trained model's performance and ensure it meets our expectations.
-Details: Testing is essential to verify the effectiveness of our model before moving on to the full project application.
+  Fully-Visible Attention Mask: Allows each word (or token) in a sequence to "see" or take into account all other words during the attention calculation, enabling the encoder to capture relationships and contexts across the entire input sequence.
 
-## Full Project
+  Decoder: Focuses on producing the output text, systematically constructing the output based on the encoded input for tasks like translation, summarization, or responding. It employs Transformer blocks similar to the encoder but uses cross-attention mechanisms for contextually aligned and coherent output. Additionally, the decoder uses a "causal" attention mask, ensuring words can only consider themselves and preceding words, not future ones during text generation.
 
-The full project encompasses several key activities aimed at extracting insights and generating content from text data:
-### 1. Summarize Text
+## Training
+We utilized RACE and SQUAD data, combining them for training. RACE data includes text, a question, four options, and the correct answer indicated by a letter (ABCD). SQUAD data has a similar structure. We merged and formatted these datasets into text, question, and correct answer format.
 
-Summarize the content based on extracted keywords for a concise overview.
+We used a QuestionGenerationDataset class to prepare and process textual data for a question-generation model, ensuring data is in the correct format for transformer-based machine learning models.
 
-### 2. Answer Span Extraction (Keywords and Noun Phrases)
+The T5FineTuner class handles model initialization, data processing for training, and validation. It sets up the T5 model and tokenizer with specified hyperparameters, ensuring reproducibility.
 
-Extract key words from texts, identify specific answers or information in the text by focusing on relevant keywords and noun phrases. In this way we can use extracted keywords as our answers. 
+Initially, we attempted to fine-tune the base T5 model but faced limitations. Subsequently, we refined T5-small, achieving better performance with adjusted epochs, batch size, and learning rate.
 
-### 3. Question Generation With T5
+## System Steps
 
-Generate pertinent questions from the text using the T5 model by giving out answer with text, enhancing interactive learning and engagement.
+Our system comprises three main parts: keyword extraction, question generation, and distractor generation.
 
-### 4. Generate Wrong Answers From Answer
+### Keyword Extraction
 
-Using two different method (sense2vec and WordNet), we extract keywords from our keyword/answer. 
+We extract keywords from both the original and a summarized version of the text, using models like T5 for summarization and nltk for stop words removal. This process involves identifying and selecting the most significant keywords.
 
-### 5. Filter Keywords with Maximum Marginal Relevance
+### Question Generation
 
-Apply the Maximum Marginal Relevance technique to filter extracted keywords, reducing redundancy and emphasizing relevance. We get best 3 results to use them as our wrong answers.
+We use the refined T5 model to generate questions based on the original text and keywords.
 
-In the end, we have 1 question, 3 wrong answers and 1 correct answer. 
+### Distractor Generation
+
+We employ two methods for distractor generation: using WordNet for specific terms and sens2vec with Maximal Marginal Relevance for selecting the best distractors based on semantic similarity and diversity.
+Conclusion
+
+In the latest version of our model, most generated questions are semantically meaningful, although there are still challenges with semantic matching for distractors. Despite not achieving optimal success rates yet, the significant potential of our model is evident. Improvements are expected with more specific question type separation, enhanced datasets, or more powerful hardware for fine-tuning.
