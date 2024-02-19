@@ -33,7 +33,11 @@ Extract key words from texts, identify specific answers or information in the te
 
 Generate pertinent questions from the text using the T5 model by giving out answer with text, enhancing interactive learning and engagement.
 
-### 4. Filter Keywords with Maximum Marginal Relevance
+### 4. Generate Wrong Answers From Answer
+
+Using two different method (sense2vec and WordNet), we extract keywords from our keyword/answer. 
+
+### 5. Filter Keywords with Maximum Marginal Relevance
 
 Apply the Maximum Marginal Relevance technique to filter extracted keywords, reducing redundancy and emphasizing relevance. We get best 3 results to use them as our wrong answers.
 
