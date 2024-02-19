@@ -40,6 +40,7 @@ We use the refined T5 model to generate questions based on the original text and
 ### Distractor Generation
 
 We employ two methods for distractor generation: using WordNet for specific terms and sens2vec with Maximal Marginal Relevance for selecting the best distractors based on semantic similarity and diversity.
-Conclusion
+
+## Conclusion
 
 In the latest version of our model, most generated questions are semantically meaningful, although there are still challenges with semantic matching for distractors. Despite not achieving optimal success rates yet, the significant potential of our model is evident. Improvements are expected with more specific question type separation, enhanced datasets, or more powerful hardware for fine-tuning.
