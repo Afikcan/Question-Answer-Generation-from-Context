@@ -1,46 +1,89 @@
-# Automatic Question-Answer Generation from Context
-## Objective and Motivation
+# Question-Answer Generation from Context
 
-Our project aims to revolutionize teaching methodologies and content creation. The primary goals include generating relevant questions based on texts and creating stimulating distractors. This project addresses complex challenges related to distractor development and T5 model training.
+## Table of Contents
+- [Introduction](#introduction)
+- [Research Questions](#research-questions)
+- [Dataset](#dataset)
+- [Usage](#usage)
+- [Approach](#approach)
+  - [Model Architecture](#model-architecture)
+  - [Data Preprocessing](#data-preprocessing)
+  - [Distractor Generation](#distractor-generation)
+- [Evaluation](#evaluation)
+- [Results](#results)
+- [Conclusion](#conclusion)
 
-## Model Used - T5
-As previously mentioned, we utilized the T5 model.
+## Introduction
 
-### T5 Model Overview
+This project focuses on **automatically generating questions and answers** from a given context using the **T5 (Text-to-Text Transfer Transformer)** model. The system creates meaningful questions, generates correct answers, and produces challenging distractors. It is designed to improve educational tools, customer support systems, and content creation by simplifying the question-generation process.
 
-T5, a transformative NLP model, operates on an encoder-decoder architecture crucial for text processing and generation.
+## Research Questions
 
-  Encoder: Analyzes the input text, converting text into tokens to create a rich, contextualized representation of each segment. Using Transformer blocks, it performs operations like self-attention to deeply understand text nuances.
+1. How can the T5 model be adapted to generate relevant and coherent questions from a given context?
+2. Can distractors be generated contextually using advanced NLP techniques?
+3. How well does the generated output align with the desired standards of educational tools in terms of correctness and distractor difficulty?
 
-  Fully-Visible Attention Mask: Allows each word (or token) in a sequence to "see" or take into account all other words during the attention calculation, enabling the encoder to capture relationships and contexts across the entire input sequence.
+## Dataset
 
-  Decoder: Focuses on producing the output text, systematically constructing the output based on the encoded input for tasks like translation, summarization, or responding. It employs Transformer blocks similar to the encoder but uses cross-attention mechanisms for contextually aligned and coherent output. Additionally, the decoder uses a "causal" attention mask, ensuring words can only consider themselves and preceding words, not future ones during text generation.
+The project uses the **RACE dataset**, which consists of reading comprehension questions for middle and high school students. This dataset includes a variety of texts, short-answer questions, and multiple-choice questions that are ideal for training the T5 model.
 
-## Training
-We utilized RACE and SQUAD data, combining them for training. RACE data includes text, a question, four options, and the correct answer indicated by a letter (ABCD). SQUAD data has a similar structure. We merged and formatted these datasets into text, question, and correct answer format.
+- **Dataset**: [RACE Dataset](http://www.cs.cmu.edu/~glai1/data/race/)
+- **Text Type**: Reading comprehension passages and associated questions.
 
-We used a QuestionGenerationDataset class to prepare and process textual data for a question-generation model, ensuring data is in the correct format for transformer-based machine learning models.
+## Usage
 
-The T5FineTuner class handles model initialization, data processing for training, and validation. It sets up the T5 model and tokenizer with specified hyperparameters, ensuring reproducibility.
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/Afikcan/Question-Answer-Generation-from-Context.git
+    cd Question-Answer-Generation-from-Context
+    ```
 
-Initially, we attempted to fine-tune the base T5 model but faced limitations. Subsequently, we refined T5-small, achieving better performance with adjusted epochs, batch size, and learning rate.
+2. Install the necessary dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-## System Steps
+3. Train the model on the RACE dataset:
+    ```bash
+    python train.py --dataset race --model t5-base
+    ```
 
-Our system comprises three main parts: keyword extraction, question generation, and distractor generation.
+4. Generate questions:
+    ```bash
+    python generate_questions.py --input "path_to_text"
+    ```
 
-### Keyword Extraction
+## Approach
 
-We extract keywords from both the original and a summarized version of the text, using models like T5 for summarization and nltk for stop words removal. This process involves identifying and selecting the most significant keywords.
+### Model Architecture
 
-### Question Generation
+The T5 model was chosen due to its strong ability to handle multiple natural language tasks, including question generation. The model converts text into a "question-answer" format, leveraging its pretrained language model to handle a variety of contexts.
 
-We use the refined T5 model to generate questions based on the original text and keywords.
+### Data Preprocessing
+
+The dataset was preprocessed to ensure that the input context, answer, and distractors were in the correct format. The **YAKE** and **BERT WSD** techniques were used for keyword extraction and disambiguation to ensure distractors were contextually relevant.
 
 ### Distractor Generation
 
-We employ two methods for distractor generation: using WordNet for specific terms and sens2vec with Maximal Marginal Relevance for selecting the best distractors based on semantic similarity and diversity.
+Distractor generation involved using **BERT WSD** for word sense disambiguation to create plausible but incorrect options. This ensures that distractors are challenging yet contextually appropriate, improving the quality of generated multiple-choice questions.
+
+## Evaluation
+
+The performance of the model was evaluated using the **ROUGE** metric, which measures the overlap between the generated questions and reference questions.
+
+- **ROUGE-1**: Measures unigram overlap.
+- **ROUGE-2**: Measures bigram overlap.
+- **ROUGE-L**: Measures the longest common subsequence.
+
+## Results
+
+The initial model performance showed promising results:
+- **ROUGE-1 F-score**: 41.40%
+- **ROUGE-2 F-score**: 24.76%
+- **ROUGE-L F-score**: 40.31%
+
+These results indicate the model's capacity to generate contextually relevant questions, but with room for improvement, particularly in generating more complex and nuanced questions.
 
 ## Conclusion
 
-In the latest version of our model, most generated questions are semantically meaningful, although there are still challenges with semantic matching for distractors. Despite not achieving optimal success rates yet, the significant potential of our model is evident. Improvements are expected with more specific question type separation, enhanced datasets, or more powerful hardware for fine-tuning.
+This project demonstrates the feasibility of using the T5 model for question generation in various applications. While the model performs well, further refinement is needed to enhance distractor generation and improve overall question quality. The approach provides a foundation for future advancements in automated question generation.
