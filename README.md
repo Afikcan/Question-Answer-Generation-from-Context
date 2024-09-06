@@ -30,28 +30,6 @@ The project uses the **RACE dataset**, which consists of reading comprehension q
 - **Dataset**: [RACE Dataset](http://www.cs.cmu.edu/~glai1/data/race/)
 - **Text Type**: Reading comprehension passages and associated questions.
 
-## Usage
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/Afikcan/Question-Answer-Generation-from-Context.git
-    cd Question-Answer-Generation-from-Context
-    ```
-
-2. Install the necessary dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3. Train the model on the RACE dataset:
-    ```bash
-    python train.py --dataset race --model t5-base
-    ```
-
-4. Generate questions:
-    ```bash
-    python generate_questions.py --input "path_to_text"
-    ```
 
 ## Approach
 
